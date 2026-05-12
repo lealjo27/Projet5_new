@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import pandas as pd
 import joblib
+from pydantic import PositiveInt
 
 
 
@@ -47,11 +48,13 @@ def check_statut():
     return {"status" : "en attente"}
 
 @app.get("/predict/{id_employe}")
-def predict(id_employe: str):
+def predict(id_employe: PositiveInt):
     if df is None or model is None:
         raise HTTPException(status_code=500, detail="L'API n'est pas prête (modèle ou data manquants)")
     
-    employe_data = df[df['id'] == id_employe]
+    id_str = str(id_employe)
+
+    employe_data = df[df['id'] == id_str]
 
     if employe_data.empty:
         raise HTTPException(status_code=404, detail=f"L'ID {id_employe} n'existe pas dans la base")
