@@ -1,3 +1,11 @@
+---
+title: Projet 5 Attrition
+emoji: 📉
+colorFrom: red
+colorTo: blue
+sdk: docker
+pinned: false
+---
 # Projet 5 : API de Prédiction d'Attrition
 
 Ce projet contient une API construite avec **FastAPI** permettant de prédire la probabilité de départ d'un employé.
