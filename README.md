@@ -1,10 +1,10 @@
 ---
 title: Projet 5 Attrition
-emoji: 📉
-colorFrom: red
-colorTo: blue
+emoji: 🚀
+colorFrom: blue
+colorTo: green
 sdk: docker
-pinned: false
+app_port: 8000
 ---
 # Projet 5 : API de Prédiction d'Attrition
 
