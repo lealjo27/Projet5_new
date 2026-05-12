@@ -15,4 +15,4 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://lealjo27:$HF_TOKEN@huggingface.co/spaces/lealjo27/projet5-attrition-api creationapi:main
+        run: git push --force https://lealjo27:$HF_TOKEN@huggingface.co/spaces/lealjo27/projet5-attrition-api main:main
