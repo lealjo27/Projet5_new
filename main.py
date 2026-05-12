@@ -47,7 +47,7 @@ def check_statut():
     return {"status" : "en attente"}
 
 @app.get("/predict/{id_employe}")
-def predict(id_employe: str):
+def predict(id_employe: str,id_employe2: str):
     if df is None or model is None:
         raise HTTPException(status_code=500, detail="L'API n'est pas prête (modèle ou data manquants)")
     
