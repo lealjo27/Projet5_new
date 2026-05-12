@@ -1,0 +1,5 @@
+gradio==4.28.1
+huggingface-hub==0.23.2
+pandas
+scikit-learn
+joblib
