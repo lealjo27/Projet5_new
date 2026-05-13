@@ -70,6 +70,14 @@ class Predictions(Base):
     facteurs = Column(String)
     date_prediction = Column(DateTime)
 
+class Logs(Base):
+    __tablename__ = "logs"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    duree_exec = Column(Float)
+    erreur = Column(String(50))
+    detail_erreur = Column(String)
+
+
 def init_db():
     try:
         print("Création des tables sur Neon")
