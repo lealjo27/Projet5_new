@@ -44,7 +44,7 @@ def alimente_table_employes():
             'Salaire_age', 'duree_par_poste'
         ]
         df_final = df[df.columns.intersection(colonnes_valides)]
-        df_final.head()
+
 
         # 4. Insertion
         print(f"🚀 Insertion de {len(df_final)} lignes dans Neon...")

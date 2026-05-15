@@ -73,13 +73,16 @@ class Predictions(Base):
 class Logs(Base):
     __tablename__ = "logs"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    duree_exec = Column(Float)
+    id_prediction = Column(Integer)
+    temps_execution = Column(Float)
+    date_prediction = Column(DateTime)
     erreur = Column(String(50))
     detail_erreur = Column(String)
 
 
 def init_db():
     try:
+
         print("Création des tables sur Neon")
         Base.metadata.create_all(bind=engine)
         print("Création des tables ok ")
