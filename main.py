@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordRequestForm
 import pandas as pd
 import joblib
 from pydantic import PositiveInt
@@ -9,8 +10,10 @@ import os
 from database.creation_database import Employe, Predictions, Logs
 from datetime import datetime
 import time
+from auth import User, get_current_user, Token, fake_users_db, verify_password, create_access_token
 
 app = FastAPI()
+
 
 
   # Obligé d'adapter pour les noms de colonnes 
@@ -104,8 +107,37 @@ def read_root():
 def check_statut():
     return {"status" : "en attente"}
 
+@app.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """
+    Route permettant d'échanger un username + password contre un jeton JWT.
+    """
+    # 1. On cherche l'utilisateur dans la base simulée
+    user_dict = fake_users_db.get(form_data.username)
+    
+    # 2. Si l'utilisateur n'existe pas ou que le mot de passe est faux -> Erreur 401
+    if not user_dict or not verify_password(form_data.password, user_dict["hashed_password"]):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Identifiant ou mot de passe incorrect",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+    # 3. Si l'utilisateur est désactivé
+    if user_dict.get("disabled"):
+        raise HTTPException(status_code=400, detail="Compte utilisateur désactivé")
+
+    # 4. On prépare les données à enfermer dans le JWT (le "sub" est le standard pour l'identifiant)
+    access_token = create_access_token(data={"sub": user_dict["username"]})
+    
+    # 5. On renvoie le jeton au client
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
 @app.get("/predict/{id_employe}")
-def predict(id_employe: PositiveInt, db : Session = Depends(get_db)):
+def predict(id_employe: PositiveInt, 
+            db : Session = Depends(get_db), 
+            current_user: User = Depends(get_current_user)):
     debut = time.time()
     message_erreur = None
     detail_erreur = None
