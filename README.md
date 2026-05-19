@@ -83,7 +83,7 @@ Projet5_new/ ├── main.py # Application FastAPI ├── auth.py # Authent
 
 ### Étapes
 
-
+```bash
 # 1. Cloner le repository
 git clone https://github.com/lealjo27/Projet5_new.git
 cd Projet5_new
@@ -107,10 +107,10 @@ uvicorn main:app --reload
 # 6. Accéder à l'API
 # Swagger UI : http://localhost:8000/docs
 # ReDoc : http://localhost:8000/redoc
-
+'''
 ---
 
-##  ⚙️ Configuration
+  ⚙️ Configuration
 Fichier .env
 
 # Base de données NeonDB
