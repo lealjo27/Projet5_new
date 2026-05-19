@@ -15,16 +15,16 @@ Une API REST complète pour prédire l'attrition des employés en utilisant le M
 
 ## 📋 Table des matières
 
-- [Aperçu](#aperçu)
-- [Fonctionnalités](#fonctionnalités)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [API Endpoints](#api-endpoints)
-- [Tests](#tests)
-- [Docker](#docker)
-- [Déploiement Hugging Face](#déploiement-hugging-face)
-- [Utilisation](#utilisation)
+- [Aperçu](#-aperçu)
+- [Fonctionnalités](#-fonctionnalités)
+- [Architecture](#-architecture)
+- [Installation](#-installation-locale)
+- [Configuration](#-configuration)
+- [API Endpoints](#-api-endpoints)
+- [Tests](#-tests)
+- [Docker](#-docker)
+- [Déploiement Hugging Face](#-déploiement-hugging-face)
+- [Utilisation](#-utilisation)
 
 ---
 
