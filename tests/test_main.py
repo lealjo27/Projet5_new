@@ -1,6 +1,5 @@
 import sys
 import os
-# Assure que Python trouve main.py
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pytest
@@ -10,7 +9,6 @@ from unittest.mock import MagicMock, patch
 from database.creation_database import Employe
 import numpy as np
 
-# Initialisation du client de test standard
 client = TestClient(app)
 
 # =========================================================
@@ -82,12 +80,10 @@ def test_predict_success_with_mock():
     app.dependency_overrides[get_db] = lambda: mock_db
 
     # 3. 🛠️ MOCK DU MODÈLE DE MACHINE LEARNING
-    # On crée un faux modèle qui répond automatiquement une probabilité
     mock_model = MagicMock()
     mock_model.predict_proba.return_value = np.array([[0.15, 0.85]])
-    mock_model.feature_importances_ = np.ones(34) / 34  # 34 features avec importance égale
+    mock_model.feature_importances_ = np.ones(35) / 35  # 35 features (pas 34!)
 
-    # On force FastAPI à utiliser ce faux modèle au lieu de la variable globale 'model'
     with patch('main.model', mock_model):
         # 4. Authentification
         login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
@@ -143,7 +139,7 @@ def test_predict_edge_case_high_risk():
     # 3. Mock du modèle avec très haute probabilité de départ
     mock_model = MagicMock()
     mock_model.predict_proba.return_value = np.array([[0.2, 0.8]])
-    mock_model.feature_importances_ = np.ones(34) / 34
+    mock_model.feature_importances_ = np.ones(35) / 35  # 35 features (pas 34!)
 
     with patch('main.model', mock_model):
         # 4. Authentification
