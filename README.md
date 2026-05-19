@@ -9,22 +9,22 @@
 
 Une API REST complète pour prédire l'attrition des employés en utilisant le Machine Learning. Construite avec **FastAPI**, **NeonDB (PostgreSQL)**, et des modèles **scikit-learn**. Déployée sur **Hugging Face Spaces**.
 
-🔗 **API Live** : [Accédez à l'API](https://lealjo27-attrition-api.hf.space/docs)
+🔗 **API Live** : [Accédez à l'API](https://votre-username-attrition-api.hf.space/docs)
 
 ---
 
 ## 📋 Table des matières
 
-- [Aperçu](#-aperçu)
-- [Fonctionnalités](#-fonctionnalités)
-- [Architecture](#-architecture)
-- [Installation locale](#-installation-locale)
-- [Configuration](#-configuration)
-- [API Endpoints](#-api-endpoints)
-- [Tests](#-tests)
-- [Docker](#-docker)
-- [Déploiement Hugging Face](#-déploiement-hugging-face)
-- [Utilisation](#-utilisation)
+- [Aperçu](#aperçu)
+- [Fonctionnalités](#fonctionnalités)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [API Endpoints](#api-endpoints)
+- [Tests](#tests)
+- [Docker](#docker)
+- [Déploiement Hugging Face](#déploiement-hugging-face)
+- [Utilisation](#utilisation)
 
 ---
 
@@ -55,10 +55,8 @@ Cette API prédit le risque d'attrition (départ) d'un employé en fonction de s
 ---
 
 ## 🏗️ Architecture
-
 Projet5_new/ ├── main.py # Application FastAPI ├── auth.py # Authentification JWT ├── requirements.txt # Dépendances ├── Dockerfile # Image Docker ├── docker-compose.yml # Orchestration Docker ├── .env.example # Variables d'environnement ├── .github/ │ └── workflows/ │ └── tests.yml # CI/CD GitHub Actions ├── database/ │ ├── creation_database.py # Modèles SQLAlchemy │ └── modele_attrition.joblib # Modèle ML préentraîné ├── tests/ │ └── test_main.py # Tests unitaires └── README.md # Documentation
 
-Code
 
 ### Stack Technique
 
@@ -109,9 +107,10 @@ uvicorn main:app --reload
 # 6. Accéder à l'API
 # Swagger UI : http://localhost:8000/docs
 # ReDoc : http://localhost:8000/redoc
+
 ⚙️ Configuration
 Fichier .env
-env
+
 # Base de données NeonDB
 DATABASE_URL=postgresql://user:password@ep-xxxx.eu-west-1.aws.neon.tech/dbname
 
@@ -119,23 +118,26 @@ DATABASE_URL=postgresql://user:password@ep-xxxx.eu-west-1.aws.neon.tech/dbname
 SECRET_KEY=votre-clé-secrète-très-longue-et-complexe-ici
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+
 Obtenir DATABASE_URL de NeonDB
 Créer un compte sur https://neon.tech/
 Créer un projet PostgreSQL
 Copier la connection string
 Ajouter dans .env avec le paramètre ?sslmode=require
-env
+
 DATABASE_URL=postgresql://user:password@ep-xxxx.eu-west-1.aws.neon.tech/mydb?sslmode=require
+
 📡 API Endpoints
 🔓 Racine
-HTTP
+
 GET /
+
 Réponse :
 
-JSON
 {
   "message": "API attrition active"
 }
+
 🔐 Authentification
 HTTP
 POST /token
@@ -149,6 +151,7 @@ JSON
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "token_type": "bearer"
 }
+
 Utilisateurs par défaut :
 
 alice / secret123
@@ -156,12 +159,14 @@ alice / secret123
 HTTP
 GET /predict/{id_employe}
 Authorization: Bearer {access_token}
+
 Exemple de requête :
 
 bash
 curl -X GET "http://localhost:8000/predict/20" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-Réponse réussie (200) :
+
+  Réponse réussie (200) :
 
 JSON
 {
@@ -181,6 +186,7 @@ JSON
 {
   "detail": "L'ID 999 n'existe pas en base"
 }
+
 🧪 Tests
 bash
 # Lancer tous les tests
@@ -202,6 +208,7 @@ docker build -t attrition-api .
 
 # Lancer le conteneur
 docker run -p 8000:8000 --env-file .env attrition-api
+
 Avec Docker Compose
 bash
 # Lancer API + PostgreSQL
@@ -239,6 +246,7 @@ services:
 
 volumes:
   postgres_data:
+
 🚀 Déploiement Hugging Face
 Prérequis
 Compte Hugging Face : https://huggingface.co/
@@ -255,7 +263,7 @@ bash
 # - Space SDK : Docker
 2. Cloner le Space
 bash
-git clone https://huggingface.co/spaces/lealjo27/attrition-api
+git clone https://huggingface.co/spaces/{votre-username}/attrition-api
 cd attrition-api
 3. Ajouter vos fichiers
 bash
@@ -280,17 +288,18 @@ git push origin main
 L'API sera disponible à :
 
 Code
-https://lealjo27-attrition-api.hf.space
+https://{votre-username}-attrition-api.hf.space
 Endpoints :
 
-Swagger UI : https://lealjo27-attrition-api.hf.space/docs
-API : https://lealjo27-attrition-api.hf.space/predict/20
+Swagger UI : https://{votre-username}-attrition-api.hf.space/docs
+API : https://{votre-username}-attrition-api.hf.space/predict/20
+
 💻 Utilisation
 Avec Python
 Python
 import requests
 
-BASE_URL = "https://lealjo27-attrition-api.hf.space"
+BASE_URL = "https://{votre-username}-attrition-api.hf.space"
 
 # 1. Authentification
 response = requests.post(
@@ -311,18 +320,19 @@ print(response.json())
 Avec cURL
 bash
 # 1. S'authentifier
-TOKEN=$(curl -X POST "https://lealjo27-attrition-api.hf.space/token" \
+TOKEN=$(curl -X POST "https://{votre-username}-attrition-api.hf.space/token" \
   -d "username=alice&password=secret123" | jq -r '.access_token')
 
 echo "Token : $TOKEN"
 
 # 2. Faire une prédiction
-curl -X GET "https://lealjo27-attrition-api.hf.space/predict/20" \
+curl -X GET "https://{votre-username}-attrition-api.hf.space/predict/20" \
   -H "Authorization: Bearer $TOKEN"
 Avec Swagger UI
-Accédez à : https://lealjo27-attrition-api.hf.space/docs
+Accédez à : https://{votre-username}-attrition-api.hf.space/docs
 Cliquez sur "Authorize" et entrez les credentials
 Testez les endpoints directement dans l'interface
+
 📊 Base de données
 Tables NeonDB
 Employe - Données des employés
@@ -349,6 +359,7 @@ LIMIT 10;
 ✅ Variables secrètes : Stockées dans HF Secrets
 ✅ Logging : Traçabilité complète
 ✅ Validation : Input validation sur tous les endpoints
+
 📚 Structure du projet
 Fichier	Rôle
 main.py	Application FastAPI principale
@@ -371,44 +382,17 @@ joblib              - Sérialisation modèle
 pytest              - Framework de tests
 Docker              - Conteneurisation
 Hugging Face        - Plateforme de déploiement
-🚀 Prochaines étapes
- Ajouter metrics (Prometheus)
- Améliorer le modèle ML
- Ajouter caching Redis
- Impl webiste frontend
- Monitoring temps réel
-🤝 Contribution
-Les contributions sont bienvenues !
 
-bash
-# Créer une branche
-git checkout -b feature/ma-feature
-
-# Committer
-git commit -m "Ajout ma-feature"
-
-# Pousser
-git push origin feature/ma-feature
-
-# Créer une Pull Request
 📄 License
 Ce projet est sous License MIT - Voir LICENSE pour plus de détails.
+
 
 👤 Auteur
 Jo - @lealjo27
 
-📧 Email : contact@jo-dev.com
+📧 Email : lealjo27@gmail.com
 🐙 GitHub : https://github.com/lealjo27
-💼 LinkedIn : linkedin.com/in/jo
-📞 Support
-🐛 Issues : GitHub Issues
-💬 Discussions : GitHub Discussions
-📖 Ressources
-FastAPI Documentation
-NeonDB Documentation
-Hugging Face Spaces
-SQLAlchemy ORM
-JWT Documentation
-scikit-learn Models
-Version : 1.0.0 | Status : ✅ Production Ready | Dernière mise à jour : 2026-05-19
+
+
+Version : 1.1.0 | Status : ✅ Production Ready | Dernière mise à jour : 2026-05-19
 
