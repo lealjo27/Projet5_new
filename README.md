@@ -21,7 +21,7 @@ python_version: "3.12"
 Une API REST complète pour prédire l'attrition des employés à l'aide du Machine Learning.  
 Elle est construite avec **FastAPI**, **NeonDB PostgreSQL**, **SQLAlchemy** et des modèles **scikit-learn**, puis déployable sur **Hugging Face Spaces** via Docker.
 
-🔗 **API Live** : [Accéder à l'API](https://lealjo27-attrition-api.hf.space/docs)
+🔗 **API Live** : [Accéder à l'API](https://lealjo27-projet5-attrition-api.hf.space/docs)
 
 ---
 
