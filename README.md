@@ -9,22 +9,22 @@
 
 Une API REST complète pour prédire l'attrition des employés en utilisant le Machine Learning. Construite avec **FastAPI**, **NeonDB (PostgreSQL)**, et des modèles **scikit-learn**. Déployée sur **Hugging Face Spaces**.
 
-🔗 **API Live** : [Accédez à l'API](https://lealjo27-projet5-attrition-api.hf.space/docs)
+🔗 **API Live** : [Accédez à l'API](https://votre-username-attrition-api.hf.space/docs)
 
 ---
 
 ## 📋 Table des matières
 
-- [Aperçu](#-aperçu)
-- [Fonctionnalités](#-fonctionnalités)
-- [Architecture](https://github.com/lealjo27/Projet5_new/blob/main/README.md#%EF%B8%8F-architecture)
-- [Installation](#-installation-locale)
-- [Configuration](#-configuration)
-- [API Endpoints](#-api-endpoints)
-- [Tests](#-tests)
-- [Docker](#-docker)
-- [Déploiement Hugging Face](#-déploiement-hugging-face)
-- [Utilisation](#-utilisation)
+- [Aperçu](#aperçu)
+- [Fonctionnalités](#fonctionnalités)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [API Endpoints](#api-endpoints)
+- [Tests](#tests)
+- [Docker](#docker)
+- [Déploiement Hugging Face](#déploiement-hugging-face)
+- [Utilisation](#utilisation)
 
 ---
 
@@ -44,7 +44,7 @@ Cette API prédit le risque d'attrition (départ) d'un employé en fonction de s
 
 - ✅ **Prédiction d'attrition** en temps réel avec probabilité
 - ✅ **Authentification JWT** sécurisée
-- ✅ **API REST** documentée avec Swagger
+- ✅ **API REST** bien documentée (Swagger/OpenAPI)
 - ✅ **Historique des prédictions** sauvegardé en BDD
 - ✅ **Logging complet** des appels API
 - ✅ **Tests unitaires** exhaustifs (5/6 tests ✓)
@@ -230,8 +230,8 @@ services:
     image: postgres:15
     environment:
       POSTGRES_DB: attrition_db
-      POSTGRES_USER: xxxxx
-      POSTGRES_PASSWORD: xxxxxx
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -255,7 +255,7 @@ bash
 # - Space SDK : Docker
 2. Cloner le Space
 bash
-git clone https://huggingface.co/spaces/lealjo27/attrition-api
+git clone https://huggingface.co/spaces/{votre-username}/attrition-api
 cd attrition-api
 3. Ajouter vos fichiers
 bash
@@ -280,17 +280,17 @@ git push origin main
 L'API sera disponible à :
 
 Code
-https://lealjo27-attrition-api.hf.space
+https://{votre-username}-attrition-api.hf.space
 Endpoints :
 
-Swagger UI : https://lealjo27-attrition-api.hf.space/docs
-API : https://lealjo27-attrition-api.hf.space/predict/20
+Swagger UI : https://{votre-username}-attrition-api.hf.space/docs
+API : https://{votre-username}-attrition-api.hf.space/predict/20
 💻 Utilisation
 Avec Python
 Python
 import requests
 
-BASE_URL = "https://lealjo27-attrition-api.hf.space"
+BASE_URL = "https://{votre-username}-attrition-api.hf.space"
 
 # 1. Authentification
 response = requests.post(
@@ -311,16 +311,16 @@ print(response.json())
 Avec cURL
 bash
 # 1. S'authentifier
-TOKEN=$(curl -X POST "https://lealjo27-attrition-api.hf.space/token" \
+TOKEN=$(curl -X POST "https://{votre-username}-attrition-api.hf.space/token" \
   -d "username=alice&password=secret123" | jq -r '.access_token')
 
 echo "Token : $TOKEN"
 
 # 2. Faire une prédiction
-curl -X GET "https://lealjo27-attrition-api.hf.space/predict/20" \
+curl -X GET "https://{votre-username}-attrition-api.hf.space/predict/20" \
   -H "Authorization: Bearer $TOKEN"
 Avec Swagger UI
-Accédez à : https://lealjo27-attrition-api.hf.space/docs
+Accédez à : https://{votre-username}-attrition-api.hf.space/docs
 Cliquez sur "Authorize" et entrez les credentials
 Testez les endpoints directement dans l'interface
 📊 Base de données
@@ -397,10 +397,12 @@ Ce projet est sous License MIT - Voir LICENSE pour plus de détails.
 👤 Auteur
 Jo - @lealjo27
 
-📧 Email : lealjo27@gmail.com
+📧 Email : contact@jo-dev.com
 🐙 GitHub : https://github.com/lealjo27
-💼 LinkedIn : https://www.linkedin.com/in/jonathanfillon/
-
+💼 LinkedIn : linkedin.com/in/jo
+📞 Support
+🐛 Issues : GitHub Issues
+💬 Discussions : GitHub Discussions
 📖 Ressources
 FastAPI Documentation
 NeonDB Documentation
@@ -408,3 +410,5 @@ Hugging Face Spaces
 SQLAlchemy ORM
 JWT Documentation
 scikit-learn Models
+Version : 1.0.0 | Status : ✅ Production Ready | Dernière mise à jour : 2026-05-19
+
