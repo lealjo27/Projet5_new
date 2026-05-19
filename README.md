@@ -17,7 +17,7 @@ Une API REST complète pour prédire l'attrition des employés en utilisant le M
 
 - [Aperçu](#-aperçu)
 - [Fonctionnalités](#-fonctionnalités)
-- [Architecture](#-architecture)
+- [Architecture](https://github.com/lealjo27/Projet5_new/blob/main/README.md#%EF%B8%8F-architecture)
 - [Installation](#-installation-locale)
 - [Configuration](#-configuration)
 - [API Endpoints](#-api-endpoints)
