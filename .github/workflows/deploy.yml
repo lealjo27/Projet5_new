@@ -54,6 +54,7 @@ jobs:
       - name: Exécution de Pytest
         run: python -m pytest tests/ -v -l -s
         env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           PYTHONPATH: .
 
