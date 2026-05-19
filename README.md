@@ -9,7 +9,7 @@
 
 Une API REST complète pour prédire l'attrition des employés en utilisant le Machine Learning. Construite avec **FastAPI**, **NeonDB (PostgreSQL)**, et des modèles **scikit-learn**. Déployée sur **Hugging Face Spaces**.
 
-🔗 **API Live** : [Accédez à l'API](https://votre-username-attrition-api.hf.space/docs)
+🔗 **API Live** : [Accédez à l'API](https://lealjo27-attrition-api.hf.space/docs)
 
 ---
 
@@ -255,7 +255,7 @@ bash
 # - Space SDK : Docker
 2. Cloner le Space
 bash
-git clone https://huggingface.co/spaces/{votre-username}/attrition-api
+git clone https://huggingface.co/spaces/lealjo27/attrition-api
 cd attrition-api
 3. Ajouter vos fichiers
 bash
@@ -280,17 +280,17 @@ git push origin main
 L'API sera disponible à :
 
 Code
-https://{votre-username}-attrition-api.hf.space
+https://lealjo27-attrition-api.hf.space
 Endpoints :
 
-Swagger UI : https://{votre-username}-attrition-api.hf.space/docs
-API : https://{votre-username}-attrition-api.hf.space/predict/20
+Swagger UI : https://lealjo27-attrition-api.hf.space/docs
+API : https://lealjo27-attrition-api.hf.space/predict/20
 💻 Utilisation
 Avec Python
 Python
 import requests
 
-BASE_URL = "https://{votre-username}-attrition-api.hf.space"
+BASE_URL = "https://lealjo27-attrition-api.hf.space"
 
 # 1. Authentification
 response = requests.post(
@@ -311,16 +311,16 @@ print(response.json())
 Avec cURL
 bash
 # 1. S'authentifier
-TOKEN=$(curl -X POST "https://{votre-username}-attrition-api.hf.space/token" \
+TOKEN=$(curl -X POST "https://lealjo27-attrition-api.hf.space/token" \
   -d "username=alice&password=secret123" | jq -r '.access_token')
 
 echo "Token : $TOKEN"
 
 # 2. Faire une prédiction
-curl -X GET "https://{votre-username}-attrition-api.hf.space/predict/20" \
+curl -X GET "https://lealjo27-attrition-api.hf.space/predict/20" \
   -H "Authorization: Bearer $TOKEN"
 Avec Swagger UI
-Accédez à : https://{votre-username}-attrition-api.hf.space/docs
+Accédez à : https://lealjo27-attrition-api.hf.space/docs
 Cliquez sur "Authorize" et entrez les credentials
 Testez les endpoints directement dans l'interface
 📊 Base de données
