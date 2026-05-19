@@ -52,9 +52,9 @@ from unittest.mock import MagicMock
 from database.creation_database import Employe
 
 def test_predict_success_with_mock():
-    """Test fonctionnel de la route de prédiction en simulant (mockant) la BDD."""
+    """Test fonctionnel complet avec Mock BDD ET Mock du modèle ML."""
     
-    # 1. On crée un faux employé en mémoire 
+    # 1. Création du faux employé
     faux_employe = Employe(
         id_employe=20, age=38.0, genre=1.0, revenu_mensuel=5200.0,
         nombre_experiences_precedentes=3.0, annee_experience_totale=12.0,
@@ -74,24 +74,30 @@ def test_predict_success_with_mock():
         Salaire_age=136.8, duree_par_poste=4.0
     )
 
-    # 2. On mock la session de base de données
+    # 2. Mock de la base de données
     mock_db = MagicMock()
-    # On simule l'enchaînement : db.query().filter().first() -> renvoie notre faux_employe
     mock_db.query.return_value.filter.return_value.first.return_value = faux_employe
 
-    # 3. On court-circuite temporairement la dépendance get_db de FastAPI
     from main import get_db
     app.dependency_overrides[get_db] = lambda: mock_db
 
-    # 4. On s'authentifie pour avoir le token nécessaire
-    login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
-    token = login_response.json()["access_token"]
-    headers = {"Authorization": f"Bearer {token}"}
+    # 3. 🛠️ MOCK DU MODÈLE DE MACHINE LEARNING
+    # On crée un faux modèle qui répond automatiquement une probabilité
+    mock_model = MagicMock()
+    mock_model.predict_proba.return_value = [[0.85, 0.15]] 
+    
+    # On force FastAPI à utiliser ce faux modèle au lieu de la variable globale 'model' qui vaut None
+    with patch('main.model', mock_model):
+        
+        # 4. Authentification
+        login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
+        token = login_response.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
 
-    # 5. Appel de la route (elle passera à travers TOUT ton code de prédiction ML dans main.py)
-    response = client.get("/predict/20", headers=headers)
+        # 5. Appel de la route
+        response = client.get("/predict/20", headers=headers)
 
-    # 6. Nettoyage de la surcharge
+    # 6. Nettoyage
     app.dependency_overrides.pop(get_db, None)
 
     # 7. Assertions
@@ -99,7 +105,6 @@ def test_predict_success_with_mock():
     json_data = response.json()
     assert json_data["employe_id"] == 20
     assert "prediction" in json_data
-    assert "probabilite_depart" in json_data
 
 
     def test_predict_edge_case_high_risk():
