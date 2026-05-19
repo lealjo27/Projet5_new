@@ -52,7 +52,7 @@ jobs:
           pip install pytest httpx
 
       - name: Exécution de Pytest
-        run: pytest -v
+        run: python -m pytest tests/ -v -l -s
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           PYTHONPATH: .
