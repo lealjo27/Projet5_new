@@ -1,3 +1,14 @@
+---
+title: Projet 5 Attrition
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+python_version: "3.12"
+
+---
+
 # 🚀 API de Prédiction d'Attrition des Employés
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/downloads/)
@@ -568,6 +579,7 @@ Hugging Face Spaces - Plateforme de déploiement
 
 Ce projet est sous licence MIT.  
 Vous êtes libre de l’utiliser, le modifier et le distribuer, sous réserve de conserver la mention de l’auteur.
+
 Voir le fichier [LICENSE](LICENSE) pour plus d’informations.
 
 
