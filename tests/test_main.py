@@ -6,6 +6,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import pytest
 from fastapi.testclient import TestClient
 from main import app
+from unittest.mock import MagicMock, patch
+from database.creation_database import Employe
+import numpy as np
 
 # Initialisation du client de test standard
 client = TestClient(app)
@@ -48,9 +51,6 @@ def test_login_wrong_password():
     assert response.status_code == 401
     assert response.json()["detail"] == "Identifiant ou mot de passe incorrect"
 
-from unittest.mock import MagicMock, patch
-from database.creation_database import Employe
-
 def test_predict_success_with_mock():
     """Test fonctionnel complet avec Mock BDD ET Mock du modèle ML."""
     
@@ -84,11 +84,11 @@ def test_predict_success_with_mock():
     # 3. 🛠️ MOCK DU MODÈLE DE MACHINE LEARNING
     # On crée un faux modèle qui répond automatiquement une probabilité
     mock_model = MagicMock()
-    mock_model.predict_proba.return_value = [[0.85, 0.15]] 
-    
-    # On force FastAPI à utiliser ce faux modèle au lieu de la variable globale 'model' qui vaut None
+    mock_model.predict_proba.return_value = np.array([[0.15, 0.85]])
+    mock_model.feature_importances_ = np.ones(34) / 34  # 34 features avec importance égale
+
+    # On force FastAPI à utiliser ce faux modèle au lieu de la variable globale 'model'
     with patch('main.model', mock_model):
-        
         # 4. Authentification
         login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
         token = login_response.json()["access_token"]
@@ -105,43 +105,58 @@ def test_predict_success_with_mock():
     json_data = response.json()
     assert json_data["employe_id"] == 20
     assert "prediction" in json_data
+    assert "probabilite_depart" in json_data
+    assert json_data["prediction"] == "Risque de départ"
+    assert json_data["probabilite_depart"] == 85.0
 
 
-    def test_predict_edge_case_high_risk():
-    #Test fonctionnel : employé avec profil à très haut risque de départ.
+def test_predict_edge_case_high_risk():
+    """Test fonctionnel : employé avec profil à très haut risque de départ."""
 
-        mock_db = MagicMock()
-        # Profil extrême : Jeune, bas salaire, bcp d'heures supp, insatisfait
-        employe_critique = Employe(
-            id_employe=888, age=19.0, genre=0.0, revenu_mensuel=1200.0,
-            nombre_experiences_precedentes=1.0, annee_experience_totale=1.0,
-            annees_dans_l_entreprise=1.0, annees_dans_le_poste_actuel=1.0,
-            satisfaction_employee_environnement=1.0, niveau_hierarchique_poste=1.0,
-            satisfaction_employee_nature_travail=1.0, satisfaction_employee_equilibre_pro_perso=1.0,
-            heure_supplementaires=1.0, augmentation_salaire_precedent=10.0,
-            distance_domicile_travail=45.0, annees_depuis_la_derniere_promotion=0.0,
-            annees_sous_responsable_actuel=1.0, statut_marital_Divorcé=0.0,
-            statut_marital_Marié=0.0, departement_Consulting=1.0,
-            departement_Ressources_Humaines=0.0, poste_Consultant=1.0, 
-            poste_Cadre_Commercial=0.0, poste_Directeur_Technique=0.0, poste_Manager=0.0,
-            poste_Représentant_Commercial=0.0, poste_Ressources_Humaines=0.0,
-            poste_Senior_Manager=0.0, poste_Tech_Lead=0.0, domaine_etude_Entrepreunariat=0.0,
-            domaine_etude_Infra_Cloud=1.0, domaine_etude_Marketing=0.0,
-            domaine_etude_Ressources_Humaines=0.0, domaine_etude_Transformation_Digitale=0.0,
-            Salaire_age=63.1, duree_par_poste=1.0
-        )
-        mock_db.query.return_value.filter.return_value.first.return_value = employe_critique
-        
-        from main import get_db
-        app.dependency_overrides[get_db] = lambda: mock_db
-        
-        # Auth
+    # 1. Création d'un employé critique
+    employe_critique = Employe(
+        id_employe=888, age=19.0, genre=0.0, revenu_mensuel=1200.0,
+        nombre_experiences_precedentes=1.0, annee_experience_totale=1.0,
+        annees_dans_l_entreprise=1.0, annees_dans_le_poste_actuel=1.0,
+        satisfaction_employee_environnement=1.0, niveau_hierarchique_poste=1.0,
+        satisfaction_employee_nature_travail=1.0, satisfaction_employee_equilibre_pro_perso=1.0,
+        heure_supplementaires=1.0, augmentation_salaire_precedent=10.0,
+        distance_domicile_travail=45.0, annees_depuis_la_derniere_promotion=0.0,
+        annees_sous_responsable_actuel=1.0, statut_marital_Divorcé=0.0,
+        statut_marital_Marié=0.0, departement_Consulting=1.0,
+        departement_Ressources_Humaines=0.0, poste_Consultant=1.0, 
+        poste_Cadre_Commercial=0.0, poste_Directeur_Technique=0.0, poste_Manager=0.0,
+        poste_Représentant_Commercial=0.0, poste_Ressources_Humaines=0.0,
+        poste_Senior_Manager=0.0, poste_Tech_Lead=0.0, domaine_etude_Entrepreunariat=0.0,
+        domaine_etude_Infra_Cloud=1.0, domaine_etude_Marketing=0.0,
+        domaine_etude_Ressources_Humaines=0.0, domaine_etude_Transformation_Digitale=0.0,
+        Salaire_age=63.1, duree_par_poste=1.0
+    )
+    
+    # 2. Mock de la base de données
+    mock_db = MagicMock()
+    mock_db.query.return_value.filter.return_value.first.return_value = employe_critique
+    
+    from main import get_db
+    app.dependency_overrides[get_db] = lambda: mock_db
+    
+    # 3. Mock du modèle avec très haute probabilité de départ
+    mock_model = MagicMock()
+    mock_model.predict_proba.return_value = np.array([[0.2, 0.8]])
+    mock_model.feature_importances_ = np.ones(34) / 34
+
+    with patch('main.model', mock_model):
+        # 4. Authentification
         login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
         headers = {"Authorization": f"Bearer {login_response.json()['access_token']}"}
         
+        # 5. Appel de la route
         response = client.get("/predict/888", headers=headers)
-        app.dependency_overrides.pop(get_db, None)
-        
-        assert response.status_code == 200
-        assert response.json()["prediction"] == "Risque de départ"
-        assert response.json()["probabilite_depart"] > 70.0  # On attend une forte probabilité
+
+    # 6. Nettoyage
+    app.dependency_overrides.pop(get_db, None)
+    
+    # 7. Assertions
+    assert response.status_code == 200
+    assert response.json()["prediction"] == "Risque de départ"
+    assert response.json()["probabilite_depart"] == 80.0
