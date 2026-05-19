@@ -141,6 +141,7 @@ def predict(id_employe: PositiveInt,
     debut = time.time()
     message_erreur = None
     detail_erreur = None
+    id_prediction = None
 
     employe = db.query(Employe).filter(Employe.id_employe == id_employe).first()
     if not employe:
