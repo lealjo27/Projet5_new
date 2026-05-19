@@ -55,6 +55,7 @@ jobs:
         run: pytest -v
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PYTHONPATH: .
 
   # ---------------------------------------------------------
   # 3. ÉTAPE : DEPLOY (Livraison sur Hugging Face)
