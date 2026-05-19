@@ -10,7 +10,7 @@
 Une API REST complète pour prédire l'attrition des employés à l'aide du Machine Learning.  
 Elle est construite avec **FastAPI**, **NeonDB PostgreSQL**, **SQLAlchemy** et des modèles **scikit-learn**, puis déployable sur **Hugging Face Spaces** via Docker.
 
-🔗 **API Live** : [Accéder à l'API](https://votre-username-attrition-api.hf.space/docs)
+🔗 **API Live** : [Accéder à l'API](https://lealjo27-attrition-api.hf.space/docs)
 
 ---
 
@@ -73,13 +73,15 @@ Projet5_new/
 ├── requirements.txt                # Dépendances Python
 ├── Dockerfile                      # Image Docker
 ├── docker-compose.yml              # Orchestration Docker
-├── .env.example                    # Exemple de variables d'environnement
+├── .env                            # Exemple de variables d'environnement
 ├── .github/
 │   └── workflows/
-│       └── tests.yml               # CI/CD GitHub Actions
+│       └── deploy.yml               # CI/CD GitHub Actions
 ├── database/
 │   ├── creation_database.py        # Modèles SQLAlchemy
 │   └── modele_attrition.joblib     # Modèle ML pré-entraîné
+│   └── data_preparee.csv           # Données concernant les salariés
+│   └── import_data.py              # Script import des données
 ├── tests/
 │   └── test_main.py                # Tests unitaires
 └── README.md                       # Documentation
@@ -360,7 +362,7 @@ SDK       : Docker
 ### 2. Cloner le Space
 
 ```bash
-git clone https://huggingface.co/spaces/{votre-username}/attrition-api
+git clone https://huggingface.co/spaces/lealjo27/attrition-api
 cd attrition-api
 ```
 
@@ -402,14 +404,14 @@ git push origin main
 Après le build, l'API sera disponible à l'adresse :
 
 ```text
-https://{votre-username}-attrition-api.hf.space
+https://lealjo27-attrition-api.hf.space
 ```
 
 Endpoints utiles :
 
 ```text
-Swagger UI : https://{votre-username}-attrition-api.hf.space/docs
-API        : https://{votre-username}-attrition-api.hf.space/predict/20
+Swagger UI : https://lealjo27-attrition-api.hf.space/docs
+API        : https://lealjo27-attrition-api.hf.space/predict/20
 ```
 
 ---
@@ -421,7 +423,7 @@ API        : https://{votre-username}-attrition-api.hf.space/predict/20
 ```python
 import requests
 
-BASE_URL = "https://{votre-username}-attrition-api.hf.space"
+BASE_URL = "https://lealjo27-attrition-api.hf.space"
 
 # 1. Authentification
 response = requests.post(
@@ -455,13 +457,13 @@ print(response.json())
 
 ```bash
 # 1. S'authentifier
-TOKEN=$(curl -X POST "https://{votre-username}-attrition-api.hf.space/token" \
+TOKEN=$(curl -X POST "https://lealjo27-attrition-api.hf.space/token" \
   -d "username=alice&password=secret123" | jq -r '.access_token')
 
 echo "Token : $TOKEN"
 
 # 2. Faire une prédiction
-curl -X GET "https://{votre-username}-attrition-api.hf.space/predict/20" \
+curl -X GET "https://lealjo27-attrition-api.hf.space/predict/20" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -470,7 +472,7 @@ curl -X GET "https://{votre-username}-attrition-api.hf.space/predict/20" \
 1. Accéder à :
 
 ```text
-https://{votre-username}-attrition-api.hf.space/docs
+https://lealjo27-attrition-api.hf.space/docs
 ```
 
 2. Cliquer sur **Authorize**
