@@ -110,7 +110,7 @@ uvicorn main:app --reload
 
 ---
 
-⚙️ Configuration
+##  ⚙️ Configuration
 Fichier .env
 
 # Base de données NeonDB
