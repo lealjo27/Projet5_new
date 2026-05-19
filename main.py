@@ -54,7 +54,7 @@ MAPPING_COLONNES = {
     'Salaire_age': 'Salaire_age',
     'duree_par_poste': 'duree_par_poste'
     }
-
+model = None
 try:
         model = joblib.load("database/modele_attrition.joblib")
      
