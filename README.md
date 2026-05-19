@@ -567,7 +567,9 @@ Hugging Face Spaces - Plateforme de déploiement
 ## 📄 Licence
 
 Ce projet est sous licence MIT.  
-Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Vous êtes libre de l’utiliser, le modifier et le distribuer, sous réserve de conserver la mention de l’auteur.
+Voir le fichier [LICENSE](LICENSE) pour plus d’informations.
+
 
 ---
 
