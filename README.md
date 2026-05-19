@@ -107,7 +107,7 @@ uvicorn main:app --reload
 # 6. Accéder à l'API
 # Swagger UI : http://localhost:8000/docs
 # ReDoc : http://localhost:8000/redoc
-```bash
+```
 ---
 
   ⚙️ Configuration
