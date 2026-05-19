@@ -81,9 +81,9 @@ FEATURE_NAMES = [
 # Chargement des datas avec NEON DB
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///:memory:")
 
-# Connexion à la base
+# Connexion à la base / si pas trouvé pour les tests aussi : creer une sqlite en mémoire
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

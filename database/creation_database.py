@@ -82,7 +82,6 @@ class Logs(Base):
 
 def init_db():
     try:
-
         print("Création des tables sur Neon")
         Base.metadata.create_all(bind=engine)
         print("Création des tables ok ")
