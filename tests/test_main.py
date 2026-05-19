@@ -48,7 +48,7 @@ def test_login_wrong_password():
     assert response.status_code == 401
     assert response.json()["detail"] == "Identifiant ou mot de passe incorrect"
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from database.creation_database import Employe
 
 def test_predict_success_with_mock():
