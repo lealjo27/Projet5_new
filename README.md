@@ -83,7 +83,7 @@ Projet5_new/ ├── main.py # Application FastAPI ├── auth.py # Authent
 
 ### Étapes
 
-```bash
+
 # 1. Cloner le repository
 git clone https://github.com/lealjo27/Projet5_new.git
 cd Projet5_new
