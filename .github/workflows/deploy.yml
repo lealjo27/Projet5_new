@@ -1,18 +1,82 @@
-name: Sync to Hugging Face
+name: CI/CD Pipeline
+
 on:
   push:
-    branches: [main] # Se déclenche sur ces deux branches
+    branches:
+      - creationapi
+      - main
 
 jobs:
-  deploy:
+  # ---------------------------------------------------------
+  # 1. ÉTAPE : BUILD (Vérification de l'environnement)
+  # ---------------------------------------------------------
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Installation et vérification des dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+  # ---------------------------------------------------------
+  # 2. ÉTAPE : TEST (Validation du code et de la sécurité)
+  # ---------------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    needs: build # Ne se lance QUE si le build a réussi
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Installation des dépendances pour exécuter les tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Exécution de Pytest
+        run: pytest -v
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+  # ---------------------------------------------------------
+  # 3. ÉTAPE : DEPLOY (Livraison sur Hugging Face)
+  # ---------------------------------------------------------
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test # Ne se lance QUE si les tests sont tous au vert
+    if: github.ref == 'refs/heads/main' # Uniquement pour la branche main
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
 
-      - name: Push to hub
+      - name: Pousser vers Hugging Face Spaces
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://lealjo27:$HF_TOKEN@huggingface.co/spaces/lealjo27/projet5-attrition-api main:main
+          HF_REPO: ${{ secrets.HF_REPO }} # 👈 On récupère ton secret ici
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
+          # Utilisation dynamique des variables d'environnement
+          git remote add hf https://jo:$HF_TOKEN@huggingface.co/spaces/$HF_REPO
+          git push --force hf main
