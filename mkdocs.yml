@@ -1,0 +1,75 @@
+site_name: Projet 5 Attrition
+site_description: API de prédiction d'attrition des employés avec FastAPI, Machine Learning et PostgreSQL
+site_author: Jo
+site_url: https://lealjo27-projet5-attrition-api.hf.space
+
+repo_name: lealjo27/Projet5_new
+repo_url: https://github.com/lealjo27/Projet5_new
+
+theme:
+  name: material
+  language: fr
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.suggest
+
+  palette:
+    - scheme: default
+      primary: blue
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Passer en mode sombre
+    - scheme: slate
+      primary: blue
+      accent: green
+      toggle:
+        icon: material/weather-sunny
+        name: Passer en mode clair
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
+  - fenced_code
+  - codehilite
+  - attr_list
+  - md_in_html
+
+nav:
+  - Accueil: index.md
+  - Présentation:
+      - Aperçu: apercu.md
+      - Fonctionnalités: fonctionnalites.md
+      - Architecture: architecture.md
+      - Technologies: technologies.md
+  - Démarrage:
+      - Installation locale: installation.md
+      - Configuration: configuration.md
+      - Docker: docker.md
+  - API:
+      - Endpoints: api.md
+      - Utilisation: utilisation.md
+      - Sécurité: securite.md
+  - Données:
+      - Base de données: base-de-donnees.md
+      - Structure du projet: structure-projet.md
+  - Qualité:
+      - Tests: tests.md
+  - Déploiement:
+      - Hugging Face: deploiement.md
+  - Projet:
+      - Licence: licence.md
+      - Auteur: auteur.md
