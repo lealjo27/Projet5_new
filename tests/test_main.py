@@ -211,5 +211,5 @@ def test_predict_invalid_token():
     headers = {"Authorization": "Bearer token_bidon_invalide"}
     response = client.get("/predict/20", headers=headers)
     
-    # Normalement, ton middleware auth doit renvoyer 401 ou 403
+    # Normalement, doit renvoyer 401 ou 403
     assert response.status_code in [401, 403]
