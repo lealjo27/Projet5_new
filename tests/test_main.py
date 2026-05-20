@@ -156,3 +156,60 @@ def test_predict_edge_case_high_risk():
     assert response.status_code == 200
     assert response.json()["prediction"] == "Risque de départ"
     assert response.json()["probabilite_depart"] == 80.0
+
+from main import get_db
+
+def test_predict_employe_not_found():
+    """Vérifie que l'API renvoie bien une 404 si l'ID est inconnu."""
+    # Mock de BDD qui renvoie 'None' (l'employé n'existe pas)
+    mock_db = MagicMock()
+    mock_db.query.return_value.filter.return_value.first.return_value = None 
+    
+    
+    app.dependency_overrides[get_db] = lambda: mock_db
+    
+    # Auth
+    login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
+    headers = {"Authorization": f"Bearer {login_response.json()['access_token']}"}
+    
+    # Appel
+    response = client.get("/predict/9999", headers=headers)
+    
+    app.dependency_overrides.pop(get_db, None)
+    
+    # Assertion
+    assert response.status_code == 404
+    assert response.json()["detail"] == "L'ID 9999 n'existe pas en base"
+
+def test_predict_db_exception():
+    """Test que l'API lève bien une exception quand la BDD est en panne."""
+    
+    # 1. Mock de la base de données
+    mock_db = MagicMock()
+    # On simule l'exception technique
+    mock_db.query.side_effect = Exception("Erreur BDD technique")
+    
+    # 2. Injection du mock
+    app.dependency_overrides[get_db] = lambda: mock_db
+    
+    # 3. Authentification
+    login_response = client.post("/token", data={"username": "alice", "password": "secret123"})
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    # 4. ASSERTION : On attend explicitement l'exception
+    # Le test passe si l'exception est levée. 
+    # S'il n'y a pas d'exception, le test échoue (c'est ce qu'on veut !)
+    with pytest.raises(Exception, match="Erreur BDD technique"):
+        client.get("/predict/20", headers=headers)
+        
+    # 5. Nettoyage
+    app.dependency_overrides.pop(get_db, None)
+
+def test_predict_invalid_token():
+#Test l'accès avec un token corrompu.
+    headers = {"Authorization": "Bearer token_bidon_invalide"}
+    response = client.get("/predict/20", headers=headers)
+    
+    # Normalement, doit renvoyer 401 ou 403
+    assert response.status_code in [401, 403]
